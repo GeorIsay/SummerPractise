@@ -1,19 +1,18 @@
-from AbstractSwarm import AbstractSwarm
-from Particle import Particle
+from AbstractSwarm import *
+from Particle import *
 import numpy as np
 
 
 class Swarm(AbstractSwarm):
     def __init__(self, size: int, min_val: np.ndarray, max_val: np.ndarray, gwc: float, lwc: float, x: np.ndarray, y: np.ndarray):
         assert len(x) == len(y)
-        # super().__init__(size, min_val, max_val, gwc, lwc)
-        AbstractSwarm.__init__(self, size, min_val, max_val, gwc, lwc)
-        self.__mean_deviation_change = []
         self.__x = x.copy()
         self.__y = y.copy()
+        super().__init__(size, min_val, max_val, gwc, lwc)
+        # AbstractSwarm.__init__(self, size, min_val, max_val, gwc, lwc)
+        self.__mean_deviation_change = []
 
-    def __particle_comparer(self, particle_1: Particle, particle_2: Particle):
-        # если первый лучше по оценке - True
+    def _particle_comparer(self, particle_1: Particle, particle_2: Particle):
         if particle_1 == None:
             return False
         elif particle_2 == None or particle_1.best_deviation() < particle_2.best_deviation():
