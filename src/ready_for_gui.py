@@ -61,8 +61,8 @@ if __name__ == "__main__":
     dots_num = 10
     min_val = [-10,-10,-10,-10]
     max_val = [10, 10, 10, 10]
-    a_g = 0,7
-    a_l = 0,5
+    a_g = 0.7
+    a_l = 0.5
     swarm = Swarm(swarmsize, dots_num, min_val, max_val, a_g, a_l)
     swarm.doIteration(iterCount)
     print(swarm.Global_best)
