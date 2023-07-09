@@ -44,10 +44,10 @@ class Particle(Swarm):
             swarm.Global_pos = self.currentPosition[:]
     def nextIteration(self, swarm):
         self.CheckFunc(swarm)
-        self.velocity[0] += 0.5 * random.random() * (self.localBestPosition[0] - self.currentPosition[0]) + 0.7 * random.random() * (swarm.Global_pos[0] - self.currentPosition[0])
-        self.velocity[1] += 0.5 * random.random() * (self.localBestPosition[1] - self.currentPosition[1]) + 0.7 * random.random() * (swarm.Global_pos[1] - self.currentPosition[1])
-        self.velocity[2] += 0.5 * random.random() * (self.localBestPosition[2] - self.currentPosition[2]) + 0.7 * random.random() * (swarm.Global_pos[2] - self.currentPosition[2])
-        self.velocity[3] += 0.5 * random.random() * (self.localBestPosition[3] - self.currentPosition[3]) + 0.7 * random.random() * (swarm.Global_pos[3] - self.currentPosition[3])
+        self.velocity[0] += swarm.a_l * random.random() * (self.localBestPosition[0] - self.currentPosition[0]) + swarm.a_g * random.random() * (swarm.Global_pos[0] - self.currentPosition[0])
+        self.velocity[1] += swarm.a_l * random.random() * (self.localBestPosition[1] - self.currentPosition[1]) + swarm.a_g * random.random() * (swarm.Global_pos[1] - self.currentPosition[1])
+        self.velocity[2] += swarm.a_l * random.random() * (self.localBestPosition[2] - self.currentPosition[2]) + swarm.a_g * random.random() * (swarm.Global_pos[2] - self.currentPosition[2])
+        self.velocity[3] += swarm.a_l * random.random() * (self.localBestPosition[3] - self.currentPosition[3]) + swarm.a_g * random.random() * (swarm.Global_pos[3] - self.currentPosition[3])
 
         # Обновить позицию частицы
         self.currentPosition[0] += self.velocity[0]
