@@ -2,6 +2,7 @@ import random
 import numpy
 import math
 
+
 class Swarm (object):
     def __init__ (self, SwarmSize, dots_num, min_val, max_val, a_g, a_l):
         self.dots = [[random.uniform(-10, 10), random.uniform(-10, 10)] for i in range(dots_num) ]
