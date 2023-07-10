@@ -327,10 +327,12 @@ class UI(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.errorMessage()
     
     def iterations(self):
-        self.facade.makeIterations(self.Iterations.value())
+        if self.swarmCounter != 0:
+            self.facade.makeIterations(self.Iterations.value())
     
     def save(self):
-        self.dialogSave.open()
+        if self.swarmCounter != 0:
+            self.dialogSave.open()
     
     def statusBarResetIterationsCounter(self, n, meanDeviation):
         self.statusBar().showMessage("Номер роя: {}. Число итераций: {}. Среднее откланение: {}. Значения: {}.".format(self.swarmCounter, n, meanDeviation, self.values))

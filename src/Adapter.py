@@ -159,5 +159,4 @@ class Adapter:
             dotsList.append(str(self.dots[i, 0]) + ' ' + str(self.dots[i, 1]))
         dotsText = ', '.join(dotsList)
         valList.append(dotsText +'\n')
-        print(dotsText)
         return valList
