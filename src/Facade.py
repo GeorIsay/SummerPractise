@@ -18,49 +18,58 @@ class Facade:
     def __swarm_isnt_create(self):
         raise (AttributeError(
             "Swarm isn't create. Please press \"random\", \"input\" or \"file\"."))
-
-    def get_dots(self):
+    
+    def setSwarmSettings(self, valList):
+        self.adapter.swarmSettings(valList)
+    
+    def openFile(self, fileName):
+        file = open(fileName)
+        valList = file.readlines()
         try:
-            return self.swarm.x_y()
-        except AttributeError:
-            self.__swarm_isnt_create()
-
-    def get_val(self):
-        try:
-            return self.swarm.best_particle()
-        except AttributeError:
-            self.__swarm_isnt_create()
-
-    def get_mean_deviation_change(self):
-        try:
-            self.swarm.mean_deviation_change()
-        except AttributeError:
-            self.__swarm_isnt_create()
-
-    def random_swarm(self, list):
-        self.swarm = self.adapter.random_swarm(list)
-        x, y = self.swarm.x_y()
-        self.GUI.plot_func(self.swarm.best_particle().best_local_val(), x, y)
-        # x, y = self.swarm.mean_deviation_change()
-        # self.GUI.plot_mean_deviation_change(x, y)
-
-    def input_swarm(self, list_val):
-        self.swarm = self.adapter.input_swarm(list_val)
-        x, y = self.swarm.x_y()
-        self.GUI.plot_func(self.swarm.best_particle().best_local_val(), x, y)
-        # x, y = self.swarm.mean_deviation_change()
-        # self.GUI.plot_mean_deviation_change(x, y)
-
-    def file_swarm(self, file_name):
-        self.swarm = self.adapter.file_swarm(file_name)
-        x, y = self.swarm.x_y()
-        self.GUI.plot_func(self.swarm.best_particle().best_local_val(), x, y)
-        # x, y = self.swarm.mean_deviation_change()
-        # self.GUI.plot_mean_deviation_change(x, y)
-
-    def save_file(self, list, name: str):
-        self.adapter.save_file(list, name)
-
-
+            if fileName[-4:] == ".sds" and len(valList) == 12:
+                self.adapter.swarmSettings(valList[:11])
+                self.adapter.inputDots(valList[11])
+                self.swarm = self.adapter.makeSwarm()
+            elif fileName[-4:] == ".sdi" and len(valList) == 24:
+                self.swarm = self.adapter.openIteratinsFile(valList)
+                self.plotGraph()
+            else:
+                raise(ValueError(''))
+        except ValueError:
+            raise(ValueError("Файл не соответсвует формату."))
+        file.close()
+        self.GUI.fileState(self.adapter.getValList())
+    
+    def saveFile(self, fileName):
+        if fileName[-4:] == ".sds":
+            self.adapter.setSwarmSettings(self.swarm)
+            self.adapter.saveSettingsFile(fileName)
+        elif fileName[-4:] == ".sdi":
+            print("Si")
+            self.adapter.saveIterationsFile(self.swarm, fileName)
+            
+    def makeIterations(self, iterationsNumber):
+        self.swarm.iterations(iterationsNumber)
+        self.plotGraph()
+    
+    def plotGraph(self):
+        values = self.swarm.getBestVal()
+        dots = self.swarm.getDots()
+        meanDeviationChange = self.swarm.getMeanDeviationChange()
+        self.GUI.plotFunc(values, dots)
+        if meanDeviationChange:
+            self.GUI.plotMeanDeviationChange(meanDeviationChange)
+    
+    def setRandomDots(self, valList):
+        self.adapter.randomDots(valList)
+        self.swarm = self.adapter.makeSwarm()
+        self.GUI.fileState(self.adapter.getValList())
+        
+    def setInputDots(self, text):
+        self.adapter.inputDots(text)
+        self.swarm = self.adapter.makeSwarm()
+    
+    
+    
 if __name__ == "__main__":
     Facade()
