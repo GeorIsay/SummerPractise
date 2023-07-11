@@ -55,9 +55,21 @@ class Swarm (object):
     def setMeanDeviationChange(self, y):
         self.best_func = [[i, y[i] * self.swarmsize] for i in range(len(y))]
 
-    def iterations(self, iterationsNumber):
+    def canonIterations(self, iterationsNumber):
         self.iterAmount = iterationsNumber
-        self.doIteration()
+        for i in range(self.iterAmount):
+            self.iterCount+=1
+            for particle in self.swarm:
+                particle.nextIteration_canon(self)
+            self.best_func.append([self.iterCount, self.Global_best])
+    
+    def classicIterations(self, iterationsNumber):
+        self.iterAmount = iterationsNumber
+        for i in range(self.iterAmount):
+            self.iterCount+=1
+            for particle in self.swarm:
+                particle.nextIteration_classic(self)
+            self.best_func.append([self.iterCount, self.Global_best])
 
     def setParticles(self, valCurent, valLocalBest, velositys):
         i = 0
@@ -141,6 +153,7 @@ class Particle():
         self.currentPosition[1] += self.velocity[1]
         self.currentPosition[2] += self.velocity[2]
         self.currentPosition[3] += self.velocity[3]
+        self.__checkLimit(swarm)
 
     def nextIteration_canon(self, swarm): #Канонический алгоритм
         self.CheckFunc(swarm)
@@ -166,6 +179,9 @@ class Particle():
         self.currentPosition[2] += self.velocity[2]
         self.currentPosition[3] += self.velocity[3]
         x = 10
+        self.__checkLimit(swarm)
+    
+    def __checkLimit(self, swarm):
         if self.currentPosition[0] > swarm.max_val[0] or self.currentPosition[1] > swarm.max_val[1] or self.currentPosition[2] > swarm.max_val[2] or self.currentPosition[3] > swarm.max_val[3] or self.currentPosition[0] < swarm.min_val[0] or self.currentPosition[1] < swarm.min_val[1] or self.currentPosition[2] < swarm.min_val[2] or self.currentPosition[3] < swarm.min_val[3]:
             self.currentPosition[0] = swarm.Global_pos[0]
             self.currentPosition[1] = swarm.Global_pos[1]
