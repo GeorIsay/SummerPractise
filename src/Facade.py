@@ -48,8 +48,12 @@ class Facade:
             print("Si")
             self.adapter.saveIterationsFile(self.swarm, fileName)
             
-    def makeIterations(self, iterationsNumber):
-        self.swarm.iterations(iterationsNumber)
+    def makeCanonIterations(self, iterationsNumber):
+        self.swarm.canonIterations(iterationsNumber)
+        self.plotGraph()
+    
+    def makeClassicIterations(self, iterationsNumber):
+        self.swarm.classicIterations(iterationsNumber)
         self.plotGraph()
     
     def plotGraph(self):

@@ -141,10 +141,14 @@ class Ui_MainWindow(object):
         # self.ratingCoef_label.setMinimumSize(QtCore.QSize(0, 14))
         # self.ratingCoef_label.setMaximumSize(QtCore.QSize(16777215, 14))
         # self.verticalLayout_4.addWidget(self.ratingCoef_label)
-        self.iterationsButton = QtWidgets.QPushButton(self.widget)
-        self.iterationsButton.setMinimumSize(QtCore.QSize(133, 0))
-        self.iterationsButton.setMaximumSize(QtCore.QSize(133, 20))
-        self.verticalLayout_4.addWidget(self.iterationsButton)
+        self.iterationsButtonCanon = QtWidgets.QPushButton(self.widget)
+        self.iterationsButtonCanon.setMinimumSize(QtCore.QSize(133, 0))
+        self.iterationsButtonCanon.setMaximumSize(QtCore.QSize(133, 20))
+        self.verticalLayout_4.addWidget(self.iterationsButtonCanon)
+        self.iterationsButtonClassic = QtWidgets.QPushButton(self.widget)
+        self.iterationsButtonClassic.setMinimumSize(QtCore.QSize(133, 0))
+        self.iterationsButtonClassic.setMaximumSize(QtCore.QSize(133, 20))
+        self.verticalLayout_4.addWidget(self.iterationsButtonClassic)
         self.saveButton = QtWidgets.QPushButton("save")
         self.saveButton.setMinimumSize(QtCore.QSize(133, 0))
         self.saveButton.setMaximumSize(QtCore.QSize(133, 20))
@@ -183,7 +187,8 @@ class Ui_MainWindow(object):
             "MainWindow", "Number of Iterations"))
         # self.ratingCoef_label.setText(
             # _translate("MainWindow", "Rating Coefficient"))
-        self.iterationsButton.setText(_translate("MainWindow", "make iterations"))
+        self.iterationsButtonCanon.setText(_translate("MainWindow", "canon iterations"))
+        self.iterationsButtonClassic.setText(_translate("MainWindow", "classic iterations"))
         self.GWC_label.setText(_translate(
             "MainWindow", "Global Weight Coefficient"))
         self.LWC_label.setText(_translate(
@@ -227,7 +232,8 @@ class UI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.inputButton.clicked.connect(self.input)
         self.fileButton.clicked.connect(self.file)
         self.saveButton.clicked.connect(self.save)
-        self.iterationsButton.clicked.connect(self.iterations)
+        self.iterationsButtonCanon.clicked.connect(self.iterations)
+        self.iterationsButtonClassic.clicked.connect(self.iterations)
         self.canavas_1 = MplCanvas()
         self.canavas_1.setMinimumSize(300, 300)
         self.canavas_2 = MplCanvas()
@@ -328,7 +334,11 @@ class UI(QtWidgets.QMainWindow, Ui_MainWindow):
     
     def iterations(self):
         if self.swarmCounter != 0:
-            self.facade.makeIterations(self.Iterations.value())
+            if self.sender() == self.iterationsButtonCanon:
+                self.facade.makeCanonIterations(self.Iterations.value())
+            else:
+                self.facade.makeClassicIterations(self.Iterations.value())
+                
     
     def save(self):
         if self.swarmCounter != 0:
